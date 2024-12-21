@@ -6,77 +6,77 @@
 using namespace std;
 
 complex<double> d;
-complex<double> det_niz[4];
+complex<double> det_array[4];
 complex<double> detr[3][4];
-bool jedinka = false, jedinka2 = false;
+bool hasZeroReal = false, hasZeroImag = false;
 
-complex<double> determinanta(int n, complex<double> det[3][4]);
+complex<double> determinant(int n, complex<double> det[3][4]);
 
 int main() {
-    complex<double> jednacina1[4], jednacina2[4], jednacina3[4];
+    complex<double> equation1[4], equation2[4], equation3[4];
     int k = 0;
     double real, imag;
 
-    cout << "Unesite jednacine za determinantu:\n";
-    cout << "Prva jednacina:\n";
+    cout << "Enter equations for determinant:\n";
+    cout << "First equation:\n";
     for (int i = 0; i < 4; i++) {
-        cout << i + 1 << ". clan (realni, imaginarni): ";
+        cout << i + 1 << ". term (real, imaginary): ";
         cin >> real >> imag;
-        jednacina1[i] = complex<double>(real, imag);
-        detr[k][i] = jednacina1[i];
+        equation1[i] = complex<double>(real, imag);
+        detr[k][i] = equation1[i];
     }
     k++;
 
-    cout << "Druga jednacina:\n";
+    cout << "Second equation:\n";
     for (int i = 0; i < 4; i++) {
-        cout << i + 1 << ". clan (realni, imaginarni): ";
+        cout << i + 1 << ". term (real, imaginary): ";
         cin >> real >> imag;
-        jednacina2[i] = complex<double>(real, imag);
-        detr[k][i] = jednacina2[i];
+        equation2[i] = complex<double>(real, imag);
+        detr[k][i] = equation2[i];
     }
     k++;
 
-    cout << "Treca jednacina:\n";
+    cout << "Third equation:\n";
     for (int i = 0; i < 4; i++) {
-        cout << i + 1 << ". clan (realni, imaginarni): ";
+        cout << i + 1 << ". term (real, imaginary): ";
         cin >> real >> imag;
-        jednacina3[i] = complex<double>(real, imag);
-        detr[k][i] = jednacina3[i];
+        equation3[i] = complex<double>(real, imag);
+        detr[k][i] = equation3[i];
     }
 
     cout << "******************\n";
     for (int i = 1; i <= 4; i++) {
-        complex<double> rezultat = determinanta(i, detr);
-        if (rezultat.real() == 0) {
-            jedinka = true;
-        } else if (rezultat.imag() == 0) {
-            jedinka2 = true;
+        complex<double> result = determinant(i, detr);
+        if (result.real() == 0) {
+            hasZeroReal = true;
+        } else if (result.imag() == 0) {
+            hasZeroImag = true;
         }
         cout << "D" << (i == 1 ? "" : to_string(i-1)) << " = ";
-        if (rezultat.real() == 0) {
-            if (rezultat.imag() == 0) {
+        if (result.real() == 0) {
+            if (result.imag() == 0) {
                 cout << "0";
             } else {
-                cout << (rezultat.imag() > 0 ? "" : "-") 
-                     << (abs(rezultat.imag()) == 1 ? "i" : to_string(abs(rezultat.imag())) + "i");
+                cout << (result.imag() > 0 ? "" : "-") 
+                     << (abs(result.imag()) == 1 ? "i" : to_string(abs(result.imag())) + "i");
             }
         } else {
-            cout << rezultat.real();
-            if (rezultat.imag() != 0) {
-                cout << (rezultat.imag() > 0 ? " + " : " - ")
-                     << (abs(rezultat.imag()) == 1 ? "i" : to_string(abs(rezultat.imag())) + "i");
+            cout << result.real();
+            if (result.imag() != 0) {
+                cout << (result.imag() > 0 ? " + " : " - ")
+                     << (abs(result.imag()) == 1 ? "i" : to_string(abs(result.imag())) + "i");
             }
         }
         cout << "\n";
           
-        det_niz[i] = rezultat;
+        det_array[i] = result;
     }
 
-    double racionalisanje = norm(det_niz[1]);  // |z|² = a² + b²
+    double rationalization = norm(det_array[1]);  // |z|² = a² + b²
     
-    complex<double> x = (det_niz[2] * conj(det_niz[1])) / racionalisanje;
-    complex<double> y = (det_niz[3] * conj(det_niz[1])) / racionalisanje;
-    complex<double> z = (det_niz[4] * conj(det_niz[1])) / racionalisanje;
+    complex<double> x = (det_array[2] * conj(det_array[1])) / rationalization;
+    complex<double> y = (det_array[3] * conj(det_array[1])) / rationalization;
+    complex<double> z = (det_array[4] * conj(det_array[1])) / rationalization;
 
     cout << fixed << setprecision(3);
     
@@ -88,18 +88,18 @@ int main() {
     return 0;
 }
 
-complex<double> determinanta(int n, complex<double> det[3][4]) {
+complex<double> determinant(int n, complex<double> det[3][4]) {
     d = complex<double>(0, 0);
     switch (n)
     {
-    case 1:
+        case 1:
     d = ((det[0][0] * det[1][1] * det[2][2]) 
         + (det[0][1] * det[1][2] * det[2][0]) 
         + (det[0][2] * det[1][0] * det[2][1])) 
         - ((det[2][0] * det[1][1] * det[0][2]) 
         + (det[2][1] * det[1][2] * det[0][0]) 
         + (det[2][2] * det[1][0] * det[0][1]));
-        det_niz[n] = d;
+        det_array[n] = d;
         break;
     case 2:
     d = ((det[0][3] * det[1][1] * det[2][2]) 
@@ -108,7 +108,7 @@ complex<double> determinanta(int n, complex<double> det[3][4]) {
         - ((det[2][3] * det[1][1] * det[0][2]) 
         + (det[2][1] * det[1][2] * det[0][3]) 
         + (det[2][2] * det[1][3] * det[0][1]));
-        det_niz[n] = d;
+        det_array[n] = d;
         break;
     case 3:
     d = ((det[0][0] * det[1][3] * det[2][2]) 
@@ -117,7 +117,7 @@ complex<double> determinanta(int n, complex<double> det[3][4]) {
         - ((det[2][0] * det[1][3] * det[0][2]) 
         + (det[2][3] * det[1][2] * det[0][0]) 
         + (det[2][2] * det[1][0] * det[0][3]));
-        det_niz[n] = d;
+        det_array[n] = d;
         break;
     case 4:
      d = ((det[0][0] * det[1][1] * det[2][3]) 
@@ -126,7 +126,7 @@ complex<double> determinanta(int n, complex<double> det[3][4]) {
         - ((det[2][0] * det[1][1] * det[0][3]) 
         + (det[2][1] * det[1][3] * det[0][0]) 
         + (det[2][3] * det[1][0] * det[0][1]));
-        det_niz[n] = d;
+        det_array[n] = d;
         break;
     default:
         break;
